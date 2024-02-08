@@ -4,7 +4,6 @@ import { Button, Navbar } from "../../Components";
 import { FaBoxOpen } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { getContent } from "../../State/Actions/ContentAction";
-import { FaLink } from "react-icons/fa";
 
 const Content = () => {
   const { isLoading, isError, userContent } = useSelector(
@@ -16,18 +15,20 @@ const Content = () => {
 
   useEffect(() => {
     if (userContent?.length === 0) dispatch(getContent(userData?.id, token));
-  }, []);
+  }, [userContent.length]);
 
   return (
     <div className="w-full m-auto">
       <div className="navbar-container mb-10 mt-5">
         <Navbar />
       </div>
-      <div className="w-full mb-10 mt-5 flex items-center justify-center">
-        <div className="w-[100px]">
-          <Button title="Add New" onClick={() => navigate("/content/new")} />
+      {userContent?.length !== 0 && (
+        <div className="w-full mb-10 mt-5 flex items-center justify-center">
+          <div className="w-[100px]">
+            <Button title="Add New" onClick={() => navigate("/content/new")} />
+          </div>
         </div>
-      </div>
+      )}
       <div className="content-container w-[80%] m-auto mt-10 gap-4">
         {isLoading && "Loading..."}
         {isError && "Something went wrong, please try again"}
@@ -37,19 +38,24 @@ const Content = () => {
               key={el._id}
               className="text-left p-2 border rounded-md shadow-md relative"
             >
+              {el?.fileurl && (
+                <div className="w-[95%] h-auto m-auto">
+                  <div className="w-full h-[50px]">
+                    <img
+                      className="w-full h-full object-cover"
+                      src={el?.fileurl}
+                      alt="file-image"
+                    />
+                  </div>
+                </div>
+              )}
               <div className="font-bold text-base whitespace-nowrap overflow-hidden text-ellipsis mb-2 text-[#4f46e5]">
                 {el.title}
               </div>
               <div className="w-full h-5 whitespace-nowrap overflow-hidden text-ellipsis font-semibold mb-2">
                 {el.description}
               </div>
-              {el?.contentFileUrl && (
-                <div className="absolute z-10 right-3 top-3">
-                  <div>
-                    <FaLink />
-                  </div>
-                </div>
-              )}
+
               <Link to={`/${el._id}`}>
                 <div className="text-[#6650a4] text-xs">More Details</div>
               </Link>

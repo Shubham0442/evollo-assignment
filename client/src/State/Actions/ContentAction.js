@@ -20,7 +20,7 @@ export const getContent = (userId, token) => (dispatch) => {
   })
     .then((res) => {
       console.log("res", res.data);
-      dispatch({ type: GET_USER_CONTENT_SUCCESS, payload: res.data.content });
+     return dispatch({ type: GET_USER_CONTENT_SUCCESS, payload: res.data.content });
     })
     .catch((err) => {
       dispatch({ type: GET_USER_CONTENT_FAILURE });
@@ -31,12 +31,12 @@ export const addContent = (formData, token) => (dispatch) => {
   dispatch({ type: ADD_USER_CONTENT_REQUEST });
 
   return axios({
-    method: "post",
     url: "https://evallo-server.onrender.com/content/upload",
+    method: "post",
     data: formData,
     headers: {
       "authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
+      "Content-Type": "multipart/form-data"
     }
   })
     .then((res) => {
