@@ -67,9 +67,9 @@ npm run dev
 #### Add Content
 - Endpoint: /content/upload
 - Method: POST
-- Description: adds new content to the respective window table.
+- Description: adds new content for the respective user.
 - Parameters:
-   - body: title, createdAt, description, userId and fileurl as file
+   - body: title, createdAt, description, userId and fileurl
    - headers: token generated after authetication
 - Returns: { success: true, msg: "Content uploaded successfully" }
 
